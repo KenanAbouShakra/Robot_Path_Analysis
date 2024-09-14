@@ -24,3 +24,5 @@ pnpm-debug.log*
 *.pyc
 *.log
 *.asv
+
+*.pdf
