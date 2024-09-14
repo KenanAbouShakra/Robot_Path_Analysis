@@ -2,16 +2,18 @@ addpath(genpath("../utils/"), genpath("../global_planner/"));
 
 clear all; clc;
 
-% load environment
-load("gridmap_20x20_scene1.mat");
-map_size = size(grid_map);
-disp(map_size(1))
+% random seed
+rng(123)
+
+% load env
+load("warehouse.mat");
+map_size = size(warehouse);
 G = 1;
 
 % simulation mode
 mode = "static";
 % Number of runs and algorithms
-num_runs = 5;
+num_runs = 30;
 algorithms = {'dijkstra', 'a_star', 'gbfs'};  % The three algorithms
 num_algorithms = length(algorithms);  % Total number of algorithms
 
@@ -19,13 +21,34 @@ num_algorithms = length(algorithms);  % Total number of algorithms
 costs = zeros(num_runs, num_algorithms);  % Each column represents an algorithm
 
 goal = [18, 29];  % Goal position
-map_size = size(grid_map);  % Size of the grid map
-
-% Generate random start points for each run
 start_points = zeros(num_runs, 2);  % Store start points
+
+min_dist = 15;  % Define the maximum allowed distance from the goal
+max_dist = 100;
 for i = 1:num_runs
-    start_points(i, :) = [randi(map_size(1)), randi(map_size(2))];  % Random start
+    valid_point = false;
+    while ~valid_point
+        % Generate random start point
+        candidate_point = [randi(map_size(1)), randi(map_size(2))];
+        
+        % Calculate Euclidean distance to the goal
+        dist_to_goal = sqrt((candidate_point(1) - goal(1))^2 + (candidate_point(2) - goal(2))^2);
+        % Check if the distance is less than 'x'
+        if dist_to_goal < max_dist && dist_to_goal > min_dist && warehouse(candidate_point(1), candidate_point(2)) == 1 && ~ismember(candidate_point, start_points, 'rows')
+            valid_point = true;
+            start_points(i, :) = candidate_point;  % Store the valid point
+        end
+    end
 end
+figure;
+plot_grid(warehouse)
+hold on
+for i = 1:size(start_points)
+    plot_square(start_points(i, :), map_size, 1, '#f00')
+end
+
+plot_square(goal, map_size, 1, '#15c')
+hold off;
 
 % Run each algorithm with the same start points
 for j = 1:num_algorithms
@@ -34,39 +57,38 @@ for j = 1:num_algorithms
     
     for i = 1:num_runs
         start = start_points(i, :);  % Get the start point for this run
-        [path, flag, cost, expand] = planner(grid_map, start, goal);  % Call the planner
+        [path, flag, cost, expand] = planner(warehouse, start, goal);  % Call the planner
         costs(i, j) = cost;  % Store the cost for this algorithm and run
     end
 end
 
-% Plot the costs for all algorithms in one bar chart
+% Calculate average and standard deviation for each algorithm
+avg_cost = mean(costs);
+std_cost = std(costs);
+
+% Define colors for the bars
+colors = [0.2 0.6 0.9; 0.9 0.6 0.2; 0.6 0.9 0.2];
+
+% Create the bar plot with error bars
 figure;
-bar(costs);  % Create a bar chart for costs
+b = bar(avg_cost, 'FaceColor', 'flat');
+b.CData = colors; % Set colors for the bars
 
-% Customize the plot
-xlabel('Run Number');
+hold on;
+% Add error bars
+errorbar(1:length(avg_cost), avg_cost, std_cost, 'k.', 'LineWidth', 1.5);
+
+% Display numerical values on the bars
+for i = 1:length(avg_cost)
+    text(i, avg_cost(i) + std_cost(i) * 0.1, sprintf('%.2f', avg_cost(i)), ...
+        'HorizontalAlignment', 'center', 'VerticalAlignment', 'bottom', 'FontSize', 10);
+end
+
+hold off;
+
+% Set the plot labels and title
+set(gca, 'XTick', 1:length(algorithms), 'XTickLabel', algorithms);
+xlabel('Algorithm');
 ylabel('Cost');
-title('Cost per Run for Different Algorithms');
-legend(algorithms, 'Location', 'best');  % Add a legend for algorithms
-xticks(1:num_runs);  % Set x-ticks to match run numbers
-
-% if mode == "static"
-%     clf; hold on
-% 
-%     % plot grid map
-%     plot_grid(grid_map);
-% 
-%     % plot expand zone
-%     plot_expand(expand, map_size, G, planner_name);
-% 
-%     % plot path
-%     plot_path(path, G);
-% 
-%     % plot start and goal
-%     plot_square(start, map_size, G, "#f00");
-%     plot_square(goal, map_size, G, "#15c");
-%     % title
-%     title([planner_name, "cost:" + num2str(cost)], 'Interpreter','none');
-% 
-%     hold off
-% end
+title('Average Cost and Standard Deviation for Motion Planning Algorithms');
+grid on;
