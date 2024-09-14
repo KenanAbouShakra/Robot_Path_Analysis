@@ -127,9 +127,72 @@ Based on the simulation results, both **path length** and **cost** show consiste
    - **Path Length**: GBFS was faster but often produced suboptimal paths, especially in more complex environments.
    - **Cost**: GBFS had higher costs than A*, and in some cases comparable to Dijkstra. It is better suited for simpler environments where speed is the priority.
 
-### Final Thoughts:
+---
+
+# Additional Algorithm Performance Analysis: Dijkstra, A*, and GBFS
+
+### Mean Path Lengths:
+- **Dijkstra**: 11.4
+- **A***: 11.4
+- **GBFS**: 13.0
+
+### Median Path Lengths:
+- **Dijkstra**: 9
+- **A***: 9
+- **GBFS**: 9
+
+### Mean Times (seconds):
+- **Dijkstra**: 0.1935
+- **A***: 0.0087
+- **GBFS**: 0.0038
+
+### Mean Costs:
+- **Dijkstra**: 11.6076
+- **A***: 11.9397
+- **GBFS**: 14.0356
+
+---
+
+## 1. Path Length Analysis:
+- **Dijkstra** and **A*** both have the same **mean path length** of **11.4**, while **GBFS** shows a higher path length with **13.0**. This implies that **GBFS** generally finds longer paths to the goal, which could be due to its heuristic nature.
+- The **median path lengths** of **9** for all three algorithms suggest that while **GBFS** has a higher mean path length, the typical path length it finds is similar to Dijkstra and A*. However, the higher mean shows it occasionally finds longer paths, which skews the average.
+
+## 2. Time Performance Analysis:
+- **Dijkstra** is significantly slower, with a mean time of **0.1935 seconds**, compared to **A*** (**0.0087 seconds**) and **GBFS** (**0.0038 seconds**). 
+- **A*** is more efficient than Dijkstra, using heuristics to prioritize paths and speed up computation, while still producing optimal paths.
+- **GBFS** is the fastest algorithm but sacrifices optimality in terms of path length and cost.
+
+## 3. Cost Analysis:
+- **Dijkstra** and **A*** have very similar costs (**11.6** and **11.94**, respectively), meaning both algorithms found paths with minimal cost.
+- **GBFS** has a higher mean cost of **14.04**, reflecting that it tends to find less optimal paths because it prioritizes speed over path optimality.
+
+---
+
+## Visual Results (Additional Analysis)
+
+### 1. Path Lengths per Run
+This diagram shows the path lengths found by each algorithm for 5 different runs.
+
+![Paths Length](Images/Paths_length.jpg)
+
+### 2. Time Taken per Run
+This diagram shows the computation time taken by each algorithm for 5 different runs.
+
+![Time Diagram](Images/Tim_diagram.jpg)
+
+### 3. Frequency of Path Lengths
+This histogram shows the distribution of path lengths found by each algorithm over 5 runs.
+
+![Frequency](Images/Frequency.jpg)
+
+### 4. Paths Visualized on the Grid Map
+This image shows the paths found by each algorithm (color-coded) on the grid map for various start and goal points.
+
+![Map](Images/Map.jpg)
+
+---
+
+### Final Thoughts
 - **A\*** proved to be the most balanced algorithm in terms of both **path length** and **cost**, offering efficient paths with relatively lower costs.
 - **Dijkstra** is more suited for environments that require high path accuracy but may incur higher computational expenses.
 - **GBFS** is a viable choice for simpler, obstacle-free environments where computational speed is more critical than path accuracy.
-
-This analysis offers valuable insight into which algorithm is most appropriate depending on the warehouse layout's complexity and the priority between minimizing path length or computational cost.
