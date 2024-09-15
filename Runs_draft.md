@@ -7,9 +7,11 @@ We are doing two different set of runs. The first set examines close items, whic
 ### Close Items Set
 These are the pickup points which are close to the drop off area\
 ![warehouse](./res/close_pickup_start_points.png "Warehouse") ![warehouse](./res/close_pickup_res.png "Warehouse")
+![warehouse](./res/close_pickup_time.png "Warehouse")
 TODO: Write some analysis
 
 ### Far Items Set
 These are the pickup points which are far to the drop off area\
 ![warehouse](./res/far_pickup_start_points.png "Warehouse") ![warehouse](./res/far_pickup_res.png "Warehouse")
+![warehouse](./res/far_pickup_time.png "Warehouse")
 TODO: Write some analysis
