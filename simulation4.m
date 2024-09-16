@@ -67,7 +67,9 @@ for i = 1:num_runs
     plot(start_points(i, 2), start_points(i, 1), 'bo', 'MarkerSize', 8);  % Plot random start point (blue circle)
     
     % Colors for each algorithm: Dijkstra = green, A* = blue, GBFS = red
-    algorithm_colors = {'g', 'b', 'r'}; 
+    colors = {[0.2 0.6 0.9], [0.9 0.6 0.2], [0.6 0.9 0.2]};
+
+    algorithm_colors = colors;%{'g', 'b', 'r'}; 
     
     for j = 1:num_algorithms
         planner_name = algorithms{j};
@@ -107,13 +109,13 @@ for i = 1:num_runs
             path_interp = interp1(t, path, t_interp, 'spline');  % Spline interpolation
 
             % Plot the smoothed path with assigned color for each algorithm
-            plot(path_interp(:, 2), path_interp(:, 1), algorithm_colors{j}, 'LineWidth', 2);  
+            plot(path_interp(:, 2), path_interp(:, 1), 'Color', algorithm_colors{j}, 'LineWidth', 2);  
         end
         costs(i, j) = cost;  % Store cost
     end
     
     % Update the legend for the current plot
-    legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra (green)', 'A* (blue)', 'GBFS (red)'}, 'Location', 'best');
+    legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra', 'A*', 'GBFS'}, 'Location', 'best');
     
     hold off;
     pause(1);  % Pause to allow viewing before proceeding to the next run
