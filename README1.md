@@ -174,6 +174,8 @@ This image shows the paths found by each algorithm (color-coded) on the grid map
 ![Map](Images/Map.jpg)
 ![Map](Images/Map1.jpg)
 ![Map](Images/Map2.jpg)
+![Map](Images/Map3.jpg)
+![Map](Images/Map4.jpg)
 
 ---
 
