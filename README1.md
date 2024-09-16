@@ -172,6 +172,8 @@ This histogram shows the distribution of path lengths found by each algorithm ov
 This image shows the paths found by each algorithm (color-coded) on the grid map for various start and goal points.
 
 ![Map](Images/Map.jpg)
+![Map](Images/Map1.jpg)
+![Map](Images/Map2.jpg)
 
 ---
 
