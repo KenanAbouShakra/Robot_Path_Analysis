@@ -52,16 +52,13 @@ The goal position was set at **[18, 29]**, and random start points were generate
 
 ### Key Statistics
 
-- **Mean Path Lengths**: 
-  - **Dijkstra**: 18.6
-  - **A\***: 18.6
-  - **GBFS**: 18.6
+ Algorithm      MeanPathLength    MeanTime    MeanCost
+    ____________    ______________    ________    ________
 
-- **Median Path Lengths**: 
-  - **Dijkstra**: 22
-  - **A\***: 18
-  - **GBFS**: 18
-  
+    {'Dijkstra'}          23.4          0.2595     26.126 
+    {'A*'      }        24.033        0.038993     26.527 
+    {'GBFS'    }        28.733        0.011029     32.343 
+
 The mean and median path lengths for all algorithms are quite similar. Dijkstra and A\* algorithms demonstrated more optimal paths, while GBFS exhibited slightly less optimal performance.
 
 ---
@@ -85,15 +82,13 @@ Below is a bar chart comparing the path length per run for the different algorit
 
 ### Key Statistics
 
-- **Mean Costs**: 
-  - **Dijkstra**: 17.8
-  - **A\***: 16.8
-  - **GBFS**: 17.4
+ Algorithm      MeanPathLength    MeanTime    MeanCost
+    ____________    ______________    ________    ________
 
-- **Median Costs**: 
-  - **Dijkstra**: 22
-  - **A\***: 15
-  - **GBFS**: 19
+    {'Dijkstra'}          23.4          0.2595     26.126 
+    {'A*'      }        24.033        0.038993     26.527 
+    {'GBFS'    }        28.733        0.011029     32.343 
+
 
 ### Cost Per Run
 
@@ -131,25 +126,13 @@ Based on the simulation results, both **path length** and **cost** show consiste
 
 # Additional Algorithm Performance Analysis: Dijkstra, A*, and GBFS
 
-### Mean Path Lengths:
-- **Dijkstra**: 11.4
-- **A***: 11.4
-- **GBFS**: 13.0
+ Algorithm      MeanPathLength    MeanTime    MeanCost
+    ____________    ______________    ________    ________
 
-### Median Path Lengths:
-- **Dijkstra**: 9
-- **A***: 9
-- **GBFS**: 9
+    {'Dijkstra'}          23.4          0.2595     26.126 
+    {'A*'      }        24.033        0.038993     26.527 
+    {'GBFS'    }        28.733        0.011029     32.343 
 
-### Mean Times (seconds):
-- **Dijkstra**: 0.1935
-- **A***: 0.0087
-- **GBFS**: 0.0038
-
-### Mean Costs:
-- **Dijkstra**: 11.6076
-- **A***: 11.9397
-- **GBFS**: 14.0356
 
 ---
 
@@ -173,12 +156,12 @@ Based on the simulation results, both **path length** and **cost** show consiste
 ### 1. Path Lengths per Run
 This diagram shows the path lengths found by each algorithm for 5 different runs.
 
-![Paths Length](Images/Paths_length.jpg)
+![Paths Length](Images/Path_lengths.jpg)
 
 ### 2. Time Taken per Run
 This diagram shows the computation time taken by each algorithm for 5 different runs.
 
-![Time Diagram](Images/Tim_diagram.jpg)
+![Time Diagram](Images/Time_diagram.jpg)
 
 ### 3. Frequency of Path Lengths
 This histogram shows the distribution of path lengths found by each algorithm over 5 runs.
@@ -193,6 +176,15 @@ This image shows the paths found by each algorithm (color-coded) on the grid map
 ---
 
 ### Final Thoughts
+    Algorithm      MeanPathLength    MeanTime    MeanCost
+    ____________    ______________    ________    ________
+
+    {'Dijkstra'}          23.4          0.2595     26.126 
+    {'A*'      }        24.033        0.038993     26.527 
+    {'GBFS'    }        28.733        0.011029     32.343 
+
+
+>> 
 - **A\*** proved to be the most balanced algorithm in terms of both **path length** and **cost**, offering efficient paths with relatively lower costs.
 - **Dijkstra** is more suited for environments that require high path accuracy but may incur higher computational expenses.
 - **GBFS** is a viable choice for simpler, obstacle-free environments where computational speed is more critical than path accuracy.

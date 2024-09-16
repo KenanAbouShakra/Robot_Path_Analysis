@@ -18,7 +18,7 @@ G = 1;
 mode = "static";
 
 % Number of runs and algorithms
-num_runs = 30;  % Set to 30 runs with random start points and a fixed goal point
+num_runs = 5;  % Set to 30 runs with random start points and a fixed goal point
 algorithms = {'dijkstra', 'a_star', 'gbfs'};  % The three algorithms
 num_algorithms = length(algorithms);
 
@@ -52,15 +52,31 @@ end
 
 % Run each algorithm with the same start points and fixed goal point
 paths = cell(num_runs, num_algorithms);  % Store paths for visualization
-for j = 1:num_algorithms
-    planner_name = algorithms{j};
-    planner = str2func(planner_name);  % Convert to function handle
+for i = 1:num_runs
+    figure;  % Create a new figure for each run
+    imagesc(warehouse);  % Display the warehouse map
+    hold on;
+    colormap("sky");  % Set color to grayscale
+    axis equal;
+    title(['Run ', num2str(i), ' - All Algorithms']);
+    xlabel('X');
+    ylabel('Y');
+
+    % Plot start and goal points for this run
+    plot(fixed_goal(2), fixed_goal(1), 'r*', 'MarkerSize', 10);  % Plot goal (red star)
+    plot(start_points(i, 2), start_points(i, 1), 'bo', 'MarkerSize', 8);  % Plot random start point (blue circle)
     
-    for i = 1:num_runs
+    % Colors for each algorithm: Dijkstra = green, A* = blue, GBFS = red
+    algorithm_colors = {'g', 'b', 'r'}; 
+    
+    for j = 1:num_algorithms
+        planner_name = algorithms{j};
+        planner = str2func(planner_name);  % Convert to function handle
+        
         start = start_points(i, :);
         goal = fixed_goal;
         tic;  % Start timer
-        
+
         % Run the algorithm and stop if it takes too long
         try
             [path, flag, cost, expand] = planner(warehouse, start, goal);  % Use 'warehouse' here
@@ -68,7 +84,7 @@ for j = 1:num_algorithms
             warning(['Error running ', planner_name, ' on run ', num2str(i)]);
             continue;  % Skip this iteration if the algorithm fails
         end
-        
+
         elapsed_time = toc;  % Measure elapsed time
         
         if elapsed_time > time_limit
@@ -84,90 +100,21 @@ for j = 1:num_algorithms
         else
             path_lengths(i, j) = length(path);
             paths{i, j} = path;  % Store the path for visualization
-        end
-        costs(i, j) = cost;  % Store cost
-    end
-end
 
-% Calculate mean values
-mean_path_lengths = mean(path_lengths);
-mean_times = mean(times);
-mean_costs = mean(costs);
-
-% Create a table to display the results
-algorithm_names = {'Dijkstra', 'A*', 'GBFS'}';
-result_table = table(algorithm_names, mean_path_lengths', mean_times', mean_costs', ...
-                     'VariableNames', {'Algorithm', 'MeanPathLength', 'MeanTime', 'MeanCost'});
-
-% Display the table
-disp(result_table);
-
-% Plot the warehouse map with start and fixed goal for each run
-figure;
-imagesc(warehouse);  % Display the warehouse map
-hold on;
-colormap("sky");  % Set color to grayscale
-axis equal;
-title('Warehouse Map with Paths for Different Start Points and Fixed Goal (19, 29)');
-xlabel('X');
-ylabel('Y');
-
-% Plot start and goal points with specific colors and shapes
-for i = 1:num_runs
-    plot(fixed_goal(2), fixed_goal(1), 'r*', 'MarkerSize', 10);  % Plot goal (red star)
-    plot(start_points(i, 2), start_points(i, 1), 'bo', 'MarkerSize', 8);  % Plot start points (blue circle)
-end
-
-% Assign colors: A* = blue, Dijkstra = green, GBFS = red
-algorithm_colors = {'g', 'b', 'r'}; 
-
-% Plot paths for each algorithm with assigned colors
-for j = 1:num_algorithms
-    for i = 1:num_runs
-        if ~isempty(paths{i, j})
-            path = paths{i, j};
-            
             % Interpolate with cubic spline to smooth the path
             t = 1:length(path);
             t_interp = linspace(1, length(path), 100);  % 100 interpolated points
             path_interp = interp1(t, path, t_interp, 'spline');  % Spline interpolation
-            
-            plot(path_interp(:, 2), path_interp(:, 1), algorithm_colors{j}, 'LineWidth', 2);  % Plot the smoothed path with color
+
+            % Plot the smoothed path with assigned color for each algorithm
+            plot(path_interp(:, 2), path_interp(:, 1), algorithm_colors{j}, 'LineWidth', 2);  
         end
+        costs(i, j) = cost;  % Store cost
     end
+    
+    % Update the legend for the current plot
+    legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra (green)', 'A* (blue)', 'GBFS (red)'}, 'Location', 'best');
+    
+    hold off;
+    pause(1);  % Pause to allow viewing before proceeding to the next run
 end
-
-% Update the legend to reflect the correct colors and symbols for each algorithm
-legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra (green)', 'A* (blue)', 'GBFS (red)'}, 'Location', 'best');
-
-hold off;
-
-% Plot the path lengths for all algorithms in one bar chart
-figure;
-bar(path_lengths);
-xlabel('Run Number');
-ylabel('Path Length');
-title('Path Length per Run for Different Algorithms');
-legend(algorithms, 'Location', 'best');
-xticks(1:num_runs);
-
-% Plot histogram for path lengths with clearer heights and separate colors
-figure;
-for j = 1:num_algorithms
-    subplot(1, num_algorithms, j);
-    histogram(path_lengths(:, j), 'FaceColor', algorithm_colors{j}, 'EdgeColor', 'k');  % Set color for each algorithm
-    title(['Path Length Histogram - ' algorithms{j}]);
-    xlabel('Path Length');
-    ylabel('Frequency');
-end
-set(gcf, 'Position', [100, 100, 800, 400]);  % Resize the figure for better clarity
-
-% Plot the times for all algorithms in a separate figure with smaller histogram bars
-figure;
-bar(times, 'BarWidth', 0.4);  % Set a smaller bar width for clarity
-xlabel('Run Number');
-ylabel('Time (seconds)');
-title('Time Taken per Run for Different Algorithms');
-legend(algorithms, 'Location', 'best');
-xticks(1:num_runs);
-set(gcf, 'Position', [100, 100, 800, 400]);  % Resize the figure for better clarity

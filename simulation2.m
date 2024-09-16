@@ -3,8 +3,8 @@ addpath(genpath("../utils/"), genpath("../global_planner/"));
 clear all; clc;
 
 % Load environment
-load("gridmap_20x20_scene1.mat");
-map_size = size(grid_map);
+load("warehouse.mat");
+map_size = size(warehouse);
 disp(map_size(1))
 G = 1;
 
