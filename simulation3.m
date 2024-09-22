@@ -19,13 +19,12 @@ mode = "static";
 
 % Number of runs and algorithms
 num_runs = 30;  % Set to 30 runs with random start points and a fixed goal point
-algorithms = {'dijkstra', 'a_star', 'gbfs'};  % The three algorithms
+algorithms = {'dijkstra', 'a_star', 'gbfs', 'jps'};  % Add JPS to the list of algorithms
 num_algorithms = length(algorithms);
 
-% Pre-allocate arrays to store path lengths, times, and costs for each algorithm
+% Pre-allocate arrays to store path lengths and times for each algorithm
 path_lengths = zeros(num_runs, num_algorithms);
 times = zeros(num_runs, num_algorithms);
-costs = zeros(num_runs, num_algorithms);
 
 % Define a time limit for each algorithm per run (in seconds)
 time_limit = 5;  % Set a time limit for each algorithm
@@ -63,7 +62,7 @@ for j = 1:num_algorithms
         
         % Run the algorithm and stop if it takes too long
         try
-            [path, flag, cost, expand] = planner(warehouse, start, goal);  % Use 'warehouse' here
+            [path, flag, ~, expand] = planner(warehouse, start, goal);  % Use 'warehouse' here
         catch
             warning(['Error running ', planner_name, ' on run ', num2str(i)]);
             continue;  % Skip this iteration if the algorithm fails
@@ -85,19 +84,17 @@ for j = 1:num_algorithms
             path_lengths(i, j) = length(path);
             paths{i, j} = path;  % Store the path for visualization
         end
-        costs(i, j) = cost;  % Store cost
     end
 end
 
 % Calculate mean values
 mean_path_lengths = mean(path_lengths);
 mean_times = mean(times);
-mean_costs = mean(costs);
 
 % Create a table to display the results
-algorithm_names = {'Dijkstra', 'A*', 'GBFS'}';
-result_table = table(algorithm_names, mean_path_lengths', mean_times', mean_costs', ...
-                     'VariableNames', {'Algorithm', 'MeanPathLength', 'MeanTime', 'MeanCost'});
+algorithm_names = {'Dijkstra', 'A*', 'GBFS', 'JPS'}';
+result_table = table(algorithm_names, mean_path_lengths', mean_times', ...
+                     'VariableNames', {'Algorithm', 'MeanPathLength', 'MeanTime'});
 
 % Display the table
 disp(result_table);
@@ -118,8 +115,8 @@ for i = 1:num_runs
     plot(start_points(i, 2), start_points(i, 1), 'bo', 'MarkerSize', 8);  % Plot start points (blue circle)
 end
 
-% Assign colors: A* = blue, Dijkstra = green, GBFS = red
-algorithm_colors = {'g', 'b', 'r'}; 
+% Assign colors: A* = blue, Dijkstra = green, GBFS = red, JPS = cyan
+algorithm_colors = {'g', 'b', 'r', 'c'}; 
 
 % Plot paths for each algorithm with assigned colors
 for j = 1:num_algorithms
@@ -138,7 +135,7 @@ for j = 1:num_algorithms
 end
 
 % Update the legend to reflect the correct colors and symbols for each algorithm
-legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra (green)', 'A* (blue)', 'GBFS (red)'}, 'Location', 'best');
+legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra (green)', 'A* (blue)', 'GBFS (red)', 'JPS (cyan)'}, 'Location', 'best');
 
 hold off;
 
@@ -171,3 +168,36 @@ title('Time Taken per Run for Different Algorithms');
 legend(algorithms, 'Location', 'best');
 xticks(1:num_runs);
 set(gcf, 'Position', [100, 100, 800, 400]);  % Resize the figure for better clarity
+
+
+% Calculate and plot CDF for path lengths
+figure;
+for j = 1:num_algorithms
+    % Sort the path lengths for algorithm j
+    sorted_lengths = sort(path_lengths(:, j));
+    % Calculate cumulative probabilities
+    cum_prob = (1:num_runs) / num_runs;
+    
+    % Plot the CDF
+    subplot(1, num_algorithms, j);
+    plot(sorted_lengths, cum_prob, 'LineWidth', 2);
+    xlabel('Path Length');
+    ylabel('CDF');
+    title(['CDF of Path Lengths - ' algorithms{j}]);
+end
+
+% Calculate and plot CDF for times
+figure;
+for j = 1:num_algorithms
+    % Sort the times for algorithm j
+    sorted_times = sort(times(:, j));
+    % Calculate cumulative probabilities
+    cum_prob = (1:num_runs) / num_runs;
+    
+    % Plot the CDF
+    subplot(1, num_algorithms, j);
+    plot(sorted_times, cum_prob, 'LineWidth', 2);
+    xlabel('Time (seconds)');
+    ylabel('CDF');
+    title(['CDF of Times - ' algorithms{j}]);
+end

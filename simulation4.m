@@ -19,7 +19,7 @@ mode = "static";
 
 % Number of runs and algorithms
 num_runs = 5;  % Set to 30 runs with random start points and a fixed goal point
-algorithms = {'dijkstra', 'a_star', 'gbfs'};  % The three algorithms
+algorithms = {'dijkstra', 'a_star', 'gbfs', 'jps'};  % Add JPS to the list of algorithms
 num_algorithms = length(algorithms);
 
 % Pre-allocate arrays to store path lengths, times, and costs for each algorithm
@@ -66,10 +66,10 @@ for i = 1:num_runs
     plot(fixed_goal(2), fixed_goal(1), 'r*', 'MarkerSize', 10);  % Plot goal (red star)
     plot(start_points(i, 2), start_points(i, 1), 'bo', 'MarkerSize', 8);  % Plot random start point (blue circle)
     
-    % Colors for each algorithm: Dijkstra = green, A* = blue, GBFS = red
-    colors = {[0.2 0.6 0.9], [0.9 0.6 0.2], [0.6 0.9 0.2]};
+    % Colors for each algorithm: Dijkstra = blue, A* = orange, GBFS = green, JPS = cyan
+    colors = {[0.2 0.6 0.9], [0.9 0.6 0.2], [0.6 0.9 0.2], [0.2 0.8 0.8]};  % Add cyan for JPS
 
-    algorithm_colors = colors;%{'g', 'b', 'r'}; 
+    algorithm_colors = colors;
     
     for j = 1:num_algorithms
         planner_name = algorithms{j};
@@ -115,7 +115,7 @@ for i = 1:num_runs
     end
     
     % Update the legend for the current plot
-    legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra', 'A*', 'GBFS'}, 'Location', 'best');
+    legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra', 'A*', 'GBFS', 'JPS'}, 'Location', 'best');
     
     hold off;
     pause(1);  % Pause to allow viewing before proceeding to the next run
