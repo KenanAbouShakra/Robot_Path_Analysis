@@ -84,10 +84,12 @@ This diagram shows the path lengths found by each algorithm for 30 different run
 
 ![Paths Length](Images/Path_lengths.jpg)
 
+![CDF to Paths Length](Images/CDF_Path.jpg)
 ### 2. Time Taken per Run
 This diagram shows the computation time taken by each algorithm for 30 different runs in the second.
 
 ![Time Diagram](Images/Time_diagram.jpg)
+![CDF to Time](Images/CDF_Time.jpg)
 
 ### 4. Paths Visualized on the Grid Map
 This image shows the paths found by each algorithm (color-coded) on the grid map for various start points. This may help to understand the working of the algorithms

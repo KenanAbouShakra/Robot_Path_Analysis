@@ -19,7 +19,7 @@ mode = "static";
 
 % Number of runs and algorithms
 num_runs = 30;  % Set to 30 runs with random start points and a fixed goal point
-algorithms = {'dijkstra', 'a_star', 'gbfs', 'jps'};  % Add JPS to the list of algorithms
+algorithms = {'dijkstra', 'a_star', 'gbfs', 'jps'}; 
 num_algorithms = length(algorithms);
 
 % Pre-allocate arrays to store path lengths and times for each algorithm
@@ -103,7 +103,7 @@ disp(result_table);
 figure;
 imagesc(warehouse);  % Display the warehouse map
 hold on;
-colormap("sky");  % Set color to grayscale
+colormap("sky");  
 axis equal;
 title('Warehouse Map with Paths for Different Start Points and Fixed Goal (19, 29)');
 xlabel('X');
@@ -134,9 +134,8 @@ for j = 1:num_algorithms
     end
 end
 
-% Update the legend to reflect the correct colors and symbols for each algorithm
-legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra (green)', 'A* (blue)', 'GBFS (red)', 'JPS (cyan)'}, 'Location', 'best');
-
+% Update the legend for the current plot
+    legend({'Goal (red star)', 'Start (blue circle)', 'Dijkstra', 'A*', 'GBFS', 'JPS'}, 'Location', 'best');
 hold off;
 
 % Plot the path lengths for all algorithms in one bar chart

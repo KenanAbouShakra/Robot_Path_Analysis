@@ -18,8 +18,8 @@ G = 1;
 mode = "static";
 
 % Number of runs and algorithms
-num_runs = 5;  % Set to 30 runs with random start points and a fixed goal point
-algorithms = {'dijkstra', 'a_star', 'gbfs', 'jps'};  % Add JPS to the list of algorithms
+num_runs = 5;  
+algorithms = {'dijkstra', 'a_star', 'gbfs', 'jps'}; 
 num_algorithms = length(algorithms);
 
 % Pre-allocate arrays to store path lengths, times, and costs for each algorithm
@@ -40,7 +40,7 @@ if num_free_spaces == 0
 end
 
 % Set a fixed goal point at (19, 29)
-fixed_goal = [19, 29];  % Manually set the fixed goal point
+fixed_goal = [19, 29];  % the fixed goal point
 
 % Generate random start points for each run (with fixed goal point)
 start_points = zeros(num_runs, 2);
@@ -56,7 +56,7 @@ for i = 1:num_runs
     figure;  % Create a new figure for each run
     imagesc(warehouse);  % Display the warehouse map
     hold on;
-    colormap("sky");  % Set color to grayscale
+    colormap("sky");  
     axis equal;
     title(['Run ', num2str(i), ' - All Algorithms']);
     xlabel('X');
@@ -67,7 +67,7 @@ for i = 1:num_runs
     plot(start_points(i, 2), start_points(i, 1), 'bo', 'MarkerSize', 8);  % Plot random start point (blue circle)
     
     % Colors for each algorithm: Dijkstra = blue, A* = orange, GBFS = green, JPS = cyan
-    colors = {[0.2 0.6 0.9], [0.9 0.6 0.2], [0.6 0.9 0.2], [0.2 0.8 0.8]};  % Add cyan for JPS
+    colors = {[0.2 0.6 0.9], [0.9 0.6 0.2], [0.6 0.9 0.2], [0.2 0.8 0.8]};  
 
     algorithm_colors = colors;
     
