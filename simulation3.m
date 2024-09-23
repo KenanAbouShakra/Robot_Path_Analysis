@@ -18,7 +18,7 @@ G = 1;
 mode = "static";
 
 % Number of runs and algorithms
-num_runs = 40;  % Set to 30 runs with random start points and a fixed goal point
+num_runs = 30;  % Set to 30 runs with random start points and a fixed goal point
 algorithms = {'dijkstra', 'a_star', 'gbfs', 'jps'}; 
 num_algorithms = length(algorithms);
 
